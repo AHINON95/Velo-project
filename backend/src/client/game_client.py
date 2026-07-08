@@ -15,7 +15,7 @@ class GameClient:
             list[Game]: A list of Game objects.
         """
         try:
-            response = requests.get("http://localhost:5555")
+            response = requests.get("http://localhost:5555", timeout=5)
             response.raise_for_status()
             games_data = response.json()
 
@@ -38,7 +38,7 @@ class GameClient:
                 if item["winner_name"]:
                     if p1.username == item["winner_name"]:
                         winner = p1
-                    if p2.username == item["winner_name"]:
+                    elif p2.username == item["winner_name"]:
                         winner = p2
 
                 g = Game(
