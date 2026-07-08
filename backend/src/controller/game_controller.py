@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from schema.game_model import GamePlayModel, GameResponse
+from schema.game_model import GamePlayModel, GameReadModel, GameResponseModel
 from service.game_service import GameService
 from utils.log_utils import get_logger
 from utils.security import verify_token
@@ -15,7 +15,7 @@ def get_game_service():
     return GameService()
 
 
-@router.post("/", response_model=GameResponse, tags=["Games"])
+@router.post("/", response_model=GameResponseModel, tags=["Games"])
 def play_game(
     req: GamePlayModel, game_service=Depends(get_game_service), current_player=Depends(verify_token)
 ):
@@ -33,7 +33,7 @@ def play_game(
     logger.info("Play a game")
     game = game_service.play(current_player.id_player, req.id_opponent, req.game_mode, **req.params)
 
-    return GameResponse(
+    return GameResponseModel(
         username1=game.player1.username,
         username2=game.player2.username,
         description=game.description,
@@ -41,3 +41,12 @@ def play_game(
         new_elo1=game.player1.elo,
         new_elo2=game.player2.elo,
     )
+
+
+@router.get("/", response_model=list[GameReadModel], tags=["Games"])
+async def get_games(id_player: int, game_mode: str = None, game_service=Depends(get_game_service)):
+    """
+    Retrieve games filtered by player ID.
+    """
+
+    return game_service.find_all_by_player(id_player, game_mode)
