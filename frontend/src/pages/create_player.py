@@ -18,8 +18,8 @@ logger = get_page_logger("create_player")
 username = st.text_input("Username", max_chars=30)
 password = st.text_input("Password", type="password")
 
-is_pwd_long_enough = len(password) >= 35
-st.write("✅" if is_pwd_long_enough else "❌", "At least 35 characters")
+is_pwd_long_enough = len(password) >= 16
+st.write("✅" if is_pwd_long_enough else "❌", "At least 16 characters")
 
 elo = st.number_input("Elo", min_value=1000, max_value=3000)
 email = st.text_input("Email")
