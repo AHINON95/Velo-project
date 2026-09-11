@@ -23,8 +23,8 @@ class GameDao(metaclass=Singleton):
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                        "INSERT INTO game(id_game,id_player1, id_player2, game_mode, id_winner, detail) VALUES "
-                        "(%(id_game)s, %(id_player1)s, %(id_player2)s, %(game_mode)s, %(id_winner)s,%(detail)s) "
+                        "INSERT INTO game(id_game,id_player1, id_player2, game_mode, id_winner, description) VALUES "
+                        "(%(id_game)s, %(id_player1)s, %(id_player2)s, %(game_mode)s, %(id_winner)s,%(description)s) "
                         "RETURNING id_game;",
                         {
                             "id_game": game.id_game,
@@ -32,7 +32,7 @@ class GameDao(metaclass=Singleton):
                             "id_player2": game.id_player2,
                             "game_mode": game.game_mode,
                             "id_winner": game.id_winner,
-                            "detail": game.detail
+                            "description": game.description
                         },
                     )
                     res = cursor.fetchone()
@@ -222,7 +222,7 @@ class GameDao(metaclass=Singleton):
         return player
 
     @log
-    def find_by_token(self, access_token: str) -> Player:
+    def find_by_token(self, access_token: str) -> Game:
         """Find a player by their access token.
         Args:
             access_token (str): The token to search for.

@@ -25,12 +25,12 @@ class DBConnection(metaclass=Singleton):
         """
 
         self.__connection = psycopg2.connect(
-            host=os.environ["POSTGRES_HOST"],
-            port=os.environ["POSTGRES_PORT"],
-            database=os.environ["POSTGRES_DATABASE"],
-            user=os.environ["POSTGRES_USER"],
-            password=os.environ["POSTGRES_PASSWORD"],
-            options=f"-c search_path={os.environ['POSTGRES_SCHEMA']}",
+            host="postgresql-cnpg-716945-rw.user-stephanas",
+            port="5432",
+            database="defaultdb",
+            user="user-stephanas",
+            password="pf7r0sctciqahocoj8wu",
+            options=f"-c search_path={'project'}",
             cursor_factory=RealDictCursor,
         )
 
